@@ -1,0 +1,69 @@
+ <!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+<title>webkit-sticky</title>
+<style>
+	body, p {margin: 0; padding: 0;}
+	body { width: 100%}
+	#wrapper {height: 1000px;}
+	#sticky {width: 100px; background: #000; color: #fff;}
+	.nav-placeholder {position: fixed; left: 0; top: 0;}
+	.nav-fix {position: fixed; left: 0; top: 0;}
+	@media (scroll-top: 100px) {
+		.sticky {position: fixed;background: red;}
+	}
+</style>
+</head>
+<body>
+	<p>1111</p>
+	<div id="wrapper">
+		<div id="sticky">
+			<p id="scrollText">0</p>
+			<p id="touchStartText">0</p>
+			<p id="touchEndText">0</p>
+			<p id="touchMoveText">0</p>
+		</div>
+	</div>
+
+	<script>
+	var util = {};
+	util.navFix = function(elemId, placeholder){
+		var nav = document.getElementById(elemId), 
+			// placeholder = placeholder ? $(placeholder) : $('.nav_placeholder'), 
+			defaultOffsetTop,
+			scrollElem = document.getElementById('scrollText'),
+			touchStartElem = document.getElementById('touchStartText'),
+			touchMoveElem = document.getElementById('touchMoveText'),
+			touchEndElem = document.getElementById('touchEndText'),
+			text;
+
+		if(!nav) return false;
+
+		defaultOffsetTop = nav.offsetTop;
+
+		window.addEventListener("scroll", function(e) {
+            if(window.scrollY > defaultOffsetTop){
+				nav.className = 'nav-fix';
+			} else {
+				nav.className = '';
+			}
+			scrollElem.innerText = +scrollElem.innerText + 1;
+			// var b = nav.offsetWidth;
+			// console.log(b)
+        });
+        window.addEventListener("touchmove", function(e) {
+            touchMoveElem.innerText = +touchMoveElem.innerText + 1;
+        });
+        window.addEventListener("touchstart", function(e) {
+            touchStartElem.innerText = +touchStartElem.innerText + 1;
+        });
+        window.addEventListener("touchend", function(e) {
+            touchEndElem.innerText = +touchEndElem.innerText + 1;
+        });
+	}
+	util.navFix('sticky')
+	</script>
+	
+</body>
